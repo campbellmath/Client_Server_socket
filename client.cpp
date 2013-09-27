@@ -10,7 +10,12 @@ void readfile(const char * filename, std::vector<unsigned char> & send_data)
 #if 1
 
     FILE *fp = NULL;
+#ifdef _WIN32 /* Defined for applications for Win32 and Win64. */
+    fopen_s(&fp, filename, "r");
+    if (fp != NULL) {
+#else
     if ((fp = fopen(filename, "r")) != NULL) {
+#endif
         char c = 0;
         while (!feof(fp)) {
             fread(&c, sizeof(unsigned char), 1, fp);
